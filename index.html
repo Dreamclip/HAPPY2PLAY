@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAPPY2PLAY - Minecraft сервер</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .header-image {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+        
+        .header-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 80%;
+            z-index: 2;
+        }
+        
+        .header-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .header-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+        
+        .copy-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        
+        .copy-btn:hover {
+            background: #ddd;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        .rules-section, .faq-section {
+            padding: 50px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+        
+        .rules-section {
+            animation-delay: 1s;
+        }
+        
+        .faq-section {
+            animation-delay: 1.3s;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+            text-align: center;
+        }
+        
+        .rule-category {
+            margin-bottom: 40px;
+            background: rgba(20, 20, 20, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .rule-category h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4fc3f7;
+        }
+        
+        .rule {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 3px solid #4fc3f7;
+        }
+        
+        .rule p {
+            margin-bottom: 5px;
+            line-height: 1.6;
+        }
+        
+        .punishment {
+            color: #f44336;
+            font-weight: bold;
+        }
+        
+        .faq-item {
+            margin-bottom: 25px;
+            background: rgba(20, 20, 20, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .faq-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #4fc3f7;
+        }
+        
+        .faq-item p {
+            line-height: 1.6;
+        }
+        
+        .faq-item a {
+            color: #4fc3f7;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .faq-item a:hover {
+            color: #0288d1;
+            text-decoration: underline;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            margin-top: 50px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.6s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Создаем звезды */
+        .create-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header-content p {
+                font-size: 1rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .rule-category h3, .faq-item h3 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-image">
+        <img src="https://thecity.m24.ru/b/d/SYketSiveog4J_DObLzWDUBNT0wyIDmtiI4EZzYHoV6j88XenTzJGR-lKdEtaxk-AJyC0joo9g=gu0Sqtwxxd9eIoa0DDV4kQ.jpg" alt="Фон сервера HAPPY2PLAY">
+        <div class="stars" id="stars"></div>
+        <div class="header-content">
+            <h1>Сервер HAPPY2PLAY</h1>
+            <p>Лучший Minecraft сервер с уникальными возможностями и дружным комьюнити. Присоединяйся к нам!</p>
+            <button class="copy-btn" onclick="copyIP()">Скопировать IP</button>
+        </div>
+    </div>
+    
+    <div class="rules-section">
+        <h2>Правила сервера</h2>
+        
+        <div class="rule-category">
+            <h3>✨ Общие правила ✨</h3>
+            
+            <div class="rule">
+                <p>❗ Незнание правил не освобождает вас от ответственности.</p>
+            </div>
+            
+            <div class="rule">
+                <p>❗ 1.1 Начав играть на наших серверах, вы автоматически подтверждаете своё согласие с данным сводом правил.</p>
+            </div>
+            
+            <div class="rule">
+                <p>❗ 1.2 Администратор вправе наказать/снять игрока, донатера по причине, не указанной в настоящих правилах только при везкой на то причине.</p>
+            </div>
+            
+            <div class="rule">
+                <p>❗ 1.3 Администрация не несет ответственности за временную или постоянную невозможность игры на сервере конкретным лицом или группой лиц.</p>
+            </div>
+            
+            <div class="rule">
+                <p>❗ 1.4 Игроки обязаны соблюдать все правила.</p>
+            </div>
+            
+            <div class="rule">
+                <p>❗ 1.5 Администрация ведет логи всех действий игроков на сервере и всех сообщений чата.</p>
+            </div>
+            
+            <div class="rule">
+                <p>❗ 1.6 Администрация имеет право корректировать данный свод правил без уведомления игрока.</p>
+            </div>
+            
+            <div class="rule">
+                <p>❗ 1.7 Запрещено распространять сторонние сервера, за любое упоминание стороннего сервера дается бан.</p>
+            </div>
+            
+            <div class="rule">
+                <p>❗ 1.8 Администрация не обязана осуществлять Вам помощь в виде ускорения постройки здания, выдачи предметов, ресурсов и др.</p>
+            </div>
+        </div>
+        
+        <div class="rule-category">
+            <h3>⟅ 💎 Правила поведения в чате 💎 ⟆</h3>
+            
+            <div class="rule">
+                <p>🌀 2.1 Запрещено оскорблять и унижать игрока, использовать слова оскорбительного характера.</p>
+                <p class="punishment">➛ Наказание: блокировка чата от 30 минут до 3 часов.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.2 Запрещено флудить/спамить в чат.</p>
+                <p class="punishment">➛ Наказание: блокировка чата от 30 до 1 часа.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.3 Запрещено рекламировать сторонние сервера/проекты.</p>
+                <p class="punishment">➛ Наказание: блокировка IP навсегда + снятие доната.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.3.1 Запрещено упоминать сторонние сервера/проекты.</p>
+                <p class="punishment">➛ Наказание: блокировка чата от 2 до 4 часов.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.4 Запрещено критиковать действия модерации/администрации.</p>
+                <p class="punishment">➛ Наказание: блокировка чата от 1 до 4 часов.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.5 Запрещено выдавать себя за модерацию/администрацию.</p>
+                <p class="punishment">➛ Наказание: блокировка аккаунта от 2 до 12 часов.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.6 Запрещено вводить администрацию в заблуждение.</p>
+                <p class="punishment">➛ Наказание: блокировка аккаунта от 2 до 12 часов.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.7 Запрещено оскорблять Модерацию/Администрацию, или сам сервер.</p>
+                <p class="punishment">➛ Наказание: блокировка аккаунта от 8 до 48 часов.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.7.1 Запрещено негативное отношение к модерации/администрации и к самому серверу.</p>
+                <p class="punishment">➛ Наказание: блокировка чата от 2 до 4 часов.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.8 Запрещено разжигать межнациональную розню.</p>
+                <p class="punishment">➛ Наказание: блокировка чата от 1 до 2 часов.</p>
+            </div>
+            
+            <div class="rule">
+                <p>🌀 2.9 Запрещено как-либо нарушать правила чата используя команды (/bc, /warn, /ban и т.п)</p>
+                <p class="punishment">➛ Наказание: Блокировка аккаунта от 2 до 5 часов.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="faq-section">
+        <h2>FAQ</h2>
+        
+        <div class="faq-item">
+            <h3>Как присоединиться к серверу?</h3>
+            <p>1. Откройте Minecraft<br>2. Нажмите "Сетевая игра"<br>3. Нажмите "Добавить сервер"<br>4. Введите IP: <strong>HAPPY2PLAY.aternos.me:42329</strong><br>5. Нажмите "Готово" и присоединяйтесь!</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Где скачать Minecraft?</h3>
+            <p>Вы можете скачать Minecraft по этой ссылке: <a href="https://tlauncher.ru/" target="_blank">https://tlauncher.ru/</a></p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Что делать, если меня забанили?</h3>
+            <p>Если вы считаете, что бан был выдан ошибочно, свяжитесь с администрацией сервера через Discord или другие контакты.</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 Сервер HAPPY2PLAY. Все права защищены.</p>
+    </footer>
+    
+    <script>
+        // Создаем звезды
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 200;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Рандомные размеры
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Рандомные позиции
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Рандомная длительность анимации
+                star.style.setProperty('--duration', `${2 + Math.random() * 3}s`);
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Копирование IP
+        function copyIP() {
+            const ip = 'HAPPY2PLAY.aternos.me:42329';
+            navigator.clipboard.writeText(ip).then(() => {
+                alert('IP скопирован: ' + ip);
+            }).catch(err => {
+                console.error('Ошибка копирования: ', err);
+                // Альтернативный способ для старых браузеров
+                const textarea = document.createElement('textarea');
+                textarea.value = ip;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('IP скопирован: ' + ip);
+            });
+        }
+        
+        // Инициализация при загрузке страницы
+        window.onload = function() {
+            createStars();
+            
+            // Анимация появления элементов при скролле
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.rules-section, .faq-section, footer');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.animation = 'fadeInUp 1s ease-out forwards';
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', animateOnScroll);
+            // Вызываем сразу на случай, если элементы уже видны
+            animateOnScroll();
+        };
+    </script>
+</body>
+</html>
